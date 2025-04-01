@@ -14,6 +14,32 @@ describe("Order unit tests", () => {
     }).toThrowError("CustomerId is required");
   });
 
+  it("should return error when removing an inexistent item", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "Item 1", 100, "p1", 2);
+      const order = new Order("o1", "c1", [item]);
+      order.remove_item("i2")
+    }).toThrowError("Item not found")
+  })
+
+  it("should include a new item", () => {
+    const item = new OrderItem("i1", "Item 1", 100, "p1", 2);
+    const order = new Order("o1", "c1", [item]);
+    const item2 = new OrderItem("i2", "Item 2", 200, "p2", 2);
+    order.include_item(item2)
+    expect(order.items).toStrictEqual([item, item2])
+  })
+
+  it("should remove an item", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "Item 1", 100, "p1", 2);
+      const item2 = new OrderItem("i2", "Item 2", 200, "p2", 2);
+      const order = new Order("o1", "c1", [item, item2]);
+      order.remove_item("i2")
+      expect(order.items).toStrictEqual([item])
+    })
+  })
+
   it("should throw error when items is empty", () => {
     expect(() => {
       let order = new Order("123", "123", []);

@@ -43,6 +43,17 @@ export default class Order {
     return true;
   }
 
+  include_item(item: OrderItem): void {
+    this._items.push(item)
+  }
+
+  remove_item(item_id: string): void {
+    if(!this._items.find((item) => item.id === item_id))
+      throw new Error("Item not found")
+    this._items = this._items.filter((item) => item.id !== item_id)
+  }
+
+
   total(): number {
     return this._items.reduce((acc, item) => acc + item.total(), 0);
   }
